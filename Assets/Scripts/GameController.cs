@@ -14,20 +14,30 @@ public class GameController : MonoBehaviour
     public float waveWait;
     public Text restartText;
     public Text gameOverText;
+    public AudioSource audioSource;
+    public AudioClip backgroundMusic;
+    public AudioClip winMusic;
+    public AudioClip loseMusic;
+    public PlayerController playerController;
+    
 
     private bool gameOver;
     private bool restart;
 
     public Text scoreText;
-    private int score;
+    public int score;
 
     void Start()
     {
+       
         score = 0;
         UpdateScore();
         StartCoroutine(SpawnWaves());
         restartText.text = "";
         gameOverText.text = "";
+        audioSource.clip = backgroundMusic;
+        audioSource.loop = true;
+        audioSource.Play();
     }
 
     IEnumerator SpawnWaves()
@@ -67,6 +77,7 @@ public class GameController : MonoBehaviour
         {
             gameOverText.text = "You Win! Game created by Theron Harrison.";
             gameOver = true;
+            WinMusic();
         }
     }
 
@@ -89,6 +100,21 @@ public class GameController : MonoBehaviour
     {
         gameOverText.text = "Game Over!";
         gameOver = true;
+        LoseMusic();
+    }
+
+    public void WinMusic()
+    {
+        audioSource.loop = false;
+        audioSource.clip = winMusic;
+        audioSource.Play();
+    }
+
+    public void LoseMusic()
+    {
+        audioSource.loop = false;
+        audioSource.clip = loseMusic;
+        audioSource.Play();
     }
 }
 

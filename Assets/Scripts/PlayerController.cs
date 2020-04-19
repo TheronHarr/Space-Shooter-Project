@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     private float nextFire;
     public AudioSource audioSource;
     public AudioClip playerShooting;
+    public PlayerController playerController;
+    public float duration = 2.5f;
+    public float duration2 = 3f;
 
     private Rigidbody rb;
     // Start is called before the first frame update
@@ -59,5 +62,36 @@ public class PlayerController : MonoBehaviour
         );
 
         rb.rotation = Quaternion.Euler(0.0f, 0.0f, rb.velocity.x * -tilt);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PowerUp"))
+        {
+            StartCoroutine(Pickup(other));
+        }
+
+        if(other.CompareTag("PowerUpSpeed"))
+        {
+            StartCoroutine(Pickup2(other));
+        }
+    }
+
+    IEnumerator Pickup(Collider other)
+    {
+        playerController.fireRate = 0.1f;
+
+        yield return new WaitForSeconds(duration);
+
+        playerController.fireRate = 0.25f;
+    }
+
+    IEnumerator Pickup2(Collider other)
+    {
+        playerController.speed = 20f;
+
+        yield return new WaitForSeconds(duration2);
+
+        playerController.speed = 10f;
     }
 }
